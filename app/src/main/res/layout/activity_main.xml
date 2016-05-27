@@ -16,6 +16,7 @@
         android:background="@android:color/white"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:id="@+id/botonsms"
         />
 
     <TextView

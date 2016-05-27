@@ -6,15 +6,26 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
+
 
         boolean res = verificarPermisos();
         if(res)
@@ -62,4 +73,26 @@ public class MainActivity extends AppCompatActivity {
         }).setActionTextColor(getResources().getColor(R.color.colorAccent))
         .show();
     }
+
+    @OnClick(R.id.botonsms)
+    public void mandarsms(View view)
+    {
+        //numero al cual se le va a mandar el mensaje
+        String num="3333221348";
+        //mensaje que se mandara
+        String mensaje="Este es un mensaje de prueba";
+        // administrador para el envio de mensajes
+        SmsManager manager = SmsManager.getDefault();
+        //verificamos que tengamos el permiso
+        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED){
+            //si no tenemos el permiso lo agregamos
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1234);
+            return;
+        }
+        //mandamos el mensaje
+        manager.sendTextMessage(num, null, mensaje, null,null);
+        //Mostramos un mensaje que se envio el texto
+        Snackbar.make(view, "Se envio el mensaje",Snackbar.LENGTH_LONG).show();
+    }
+
 }
